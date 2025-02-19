@@ -1,8 +1,15 @@
 package com.qima.challenge.controller;
 
+import com.qima.challenge.config.ApiErrorResponse;
 import com.qima.challenge.dto.ProductDto;
 import com.qima.challenge.dto.ProductFilter;
 import com.qima.challenge.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -13,13 +20,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/products")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
+@RequestMapping("/api/v1/products")
+@Tag(name = "Product Management V1", description = "Version 1 of Product APIs")
 public class ProductController {
     private final ProductService productService;
 
     @GetMapping
+    @Operation(
+            summary = "Get all products",
+            description = "Retrieve a paginated list of products with optional filtering",
+            tags = {"Product Management", "Read"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successful retrieval of products",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = Page.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Bad request",
+                    content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+            )
+    })
     public ResponseEntity<Page<ProductDto>> getAllProducts(
             ProductFilter filter,
             @PageableDefault(size = 20, sort = "name") Pageable pageable
@@ -35,6 +63,26 @@ public class ProductController {
     }
 
     @PostMapping
+    @Operation(
+            summary = "Create a new product",
+            description = "Add a new product to the system",
+            tags = {"Product Management", "Create"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "201",
+                    description = "Product created successfully",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ProductDto.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Validation error",
+                    content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))
+            )
+    })
     public ResponseEntity<ProductDto> createProduct(
             @Valid @RequestBody ProductDto productDto
     ) {
@@ -57,3 +105,4 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 }
+

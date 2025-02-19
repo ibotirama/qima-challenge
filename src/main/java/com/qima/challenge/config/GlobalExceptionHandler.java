@@ -3,6 +3,7 @@ package com.qima.challenge.config;
 import com.qima.challenge.exception.DuplicateResourceException;
 import com.qima.challenge.exception.ResourceNotFoundException;
 import com.qima.challenge.exception.ValidationException;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -118,6 +119,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
+    @Operation(summary = "Handle General Exceptions")
     public ResponseEntity<ApiErrorResponse> handleGeneralException(
             Exception ex,
             WebRequest request
