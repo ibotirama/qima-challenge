@@ -22,7 +22,6 @@ public class ProductDto {
     @DecimalMin(value = "0.0", message = "Price must be positive")
     private BigDecimal price;
     private CategoryDto category;
-    @Pattern(regexp = "^[A-Z]{3}-\\d{3,4}$", message = "SKU must be in format XXX-123")
     private String sku;
     @Min(value = 0, message = "Stock quantity cannot be negative")
     private Integer stockQuantity;

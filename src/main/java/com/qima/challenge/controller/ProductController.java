@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1/products")
 @Tag(name = "Product Management V1", description = "Version 1 of Product APIs")
 public class ProductController {
@@ -30,8 +29,7 @@ public class ProductController {
     @GetMapping
     @Operation(
             summary = "Get all products",
-            description = "Retrieve a paginated list of products with optional filtering",
-            tags = {"Product Management", "Read"}
+            description = "Retrieve a paginated list of products with optional filtering"
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -65,8 +63,7 @@ public class ProductController {
     @PostMapping
     @Operation(
             summary = "Create a new product",
-            description = "Add a new product to the system",
-            tags = {"Product Management", "Create"}
+            description = "Add a new product to the system"
     )
     @ApiResponses(value = {
             @ApiResponse(
