@@ -1,9 +1,15 @@
 import { Product, PaginatedProducts } from '../models/Product';
 import axiosInstance from './AxiosConfig';
 
-export const getProducts = async (page: number = 0, size: number = 20): Promise<PaginatedProducts> => {
+export interface FilterParams {
+    name?: string;
+    minPrice?: number;
+    maxPrice?: number;
+}
+
+export const getProducts = async (page: number = 0, size: number = 20, filters: FilterParams = {}): Promise<PaginatedProducts> => {
     const response = await axiosInstance.get('/products', {
-        params: { page, size }
+        params: { page, size, ...filters}
     });
     return response.data;
 };
