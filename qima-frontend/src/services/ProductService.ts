@@ -1,33 +1,28 @@
-import axios from 'axios';
 import { Product, PaginatedProducts } from '../models/Product';
-
-const apiUrl = 'http://localhost:8080/api/v1/products';
+import axiosInstance from './AxiosConfig';
 
 export const getProducts = async (page: number = 0, size: number = 20): Promise<PaginatedProducts> => {
-    const response = await axios.get(apiUrl, {
-        params: {
-            page,
-            size,
-        },
+    const response = await axiosInstance.get('/products', {
+        params: { page, size }
     });
     return response.data;
 };
 
 export const getProductById = async (id: number): Promise<Product> => {
-    const response = await axios.get(`${apiUrl}/${id}`);
+    const response = await axiosInstance.get(`/products/${id}`);
     return response.data;
 };
 
 export const createProduct = async (product: Product): Promise<Product> => {
-    const response = await axios.post(apiUrl, product);
+    const response = await axiosInstance.post('/products', product);
     return response.data;
 };
 
 export const updateProduct = async (product: Product): Promise<Product> => {
-    const response = await axios.put(`${apiUrl}/${product.id}`, product);
+    const response = await axiosInstance.put(`/products/${product.id}`, product);
     return response.data;
 };
 
 export const deleteProduct = async (id: number): Promise<void> => {
-    await axios.delete(`${apiUrl}/${id}`);
+    await axiosInstance.delete(`/products/${id}`);
 };
